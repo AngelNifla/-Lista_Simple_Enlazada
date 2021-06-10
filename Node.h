@@ -7,17 +7,30 @@
 class Node
 {
 private:
-    
+    int elem;
+    Node *next;
 public:
     Node();             //constructor principal
     Node(int _elem);    //constructor pot parametro
     
-    int elem;
-    Node *next;
+    
 
     void modific(int _elem);    //funcion para imprimir un nodo
 
     void print();       //funcion para immprimir un nodo
+    int get_elem(){
+        return elem;
+    };
+    void set_elem(int _elem){
+        elem = _elem;
+    }
+    void set_next(Node*_next){
+        next = _next;
+    }
+    Node* get_next(){
+        return next;
+    };
+
 
     friend std::ostream &operator << (std::ostream &,const Node &);
 

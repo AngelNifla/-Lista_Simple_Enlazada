@@ -19,7 +19,7 @@ public:
     void insert_node_size(int _size);
     void modificar_node_lista(int _pos,int _elem);
     void remove(int _pos);
-    void print_list();
+    void print();
 
     
     
@@ -48,15 +48,15 @@ void LinkedList::insert_node(int _dato)
     if (!head) {
         head = new_Node;
     } else {
-        if (head->elem > _dato) {
-            new_Node->next = head;
+        if (head->get_elem() > _dato) {
+            new_Node->set_next(head);
             head = new_Node;
         } else {
-            while ((aux->next != NULL) && (aux->next->elem < _dato)) {
-                aux = aux->next;
+            while ((aux->get_next() != NULL) && (aux->get_next()->get_elem() < _dato)) {
+                aux = aux->get_next();
             }
-            new_Node->next = aux->next;
-            aux->next = new_Node;
+            new_Node->set_next(aux->get_next());
+            aux->set_next(new_Node);
         }
     }
     size++;
@@ -83,7 +83,7 @@ void LinkedList::modificar_node_lista(int _pos,int _elem)
             if (i == _pos) {
                 aux->modific(_elem);
             }
-            aux = aux->next;
+            aux = aux->get_next();
             
         }
     }
@@ -92,29 +92,29 @@ void LinkedList::modificar_node_lista(int _pos,int _elem)
 // Eliminar un nodo por posicion
 void LinkedList::remove(int _pos)
 {
-    Node *temp = head;
-    Node *temp1 = temp->next;
+    Node *aux = head;
+    Node *aux1 = aux->get_next();
  
     if (_pos < 1 || _pos > size) {
         std::cout << "Fuera de rango \n";
     } else if (_pos == 1) {
-        head = temp->next;
+        head = aux->get_next();
     } else {
-        for (int i = 2; i <= size; i++) {
+        for (int i = 2; i <= _pos; i++) {
             if (i == _pos) {
-                Node *aux_node = temp1;
-                temp->next = temp1->next;
+                Node *aux_node = aux1;
+                aux->set_next(aux1->get_next());
                 delete aux_node;
                 size--;
             }
-            temp = temp->next;
-            temp1 = temp1->next;
+            aux = aux->get_next();
+            aux1 = aux1->get_next();
         }
     }
 }
 
 //imprimir lista de nodos
-void LinkedList::print_list()
+void LinkedList::print()
 {
     Node *aux = head;
     if (!head) {
@@ -122,20 +122,19 @@ void LinkedList::print_list()
     } else {
         while (aux) {
             aux->print();
-            if (!aux->next) std::cout << "vacio";
-                aux = aux->next;
+            if (!aux->get_next()) std::cout << "vacio";
+                aux = aux->get_next();
         }
   }
   std::cout <<"\n\n";
 }
 
-//sobrecarga
 std::ostream& operator << (std::ostream &o, const LinkedList &_DA){
     Node *aux= _DA.gethead();
 
     for(int i=1; i<=_DA.getsize(); i++){
-		o << "Nodo-> " << "Elemento: " <<aux->elem<<" Siguiente: " << aux->next <<"\n";
-        aux = aux->next;
+		o << "Nodo-> " << "Elemento: " <<aux->get_elem()<<" Siguiente: " << aux->get_next() <<"\n";
+        aux = aux->get_next();
 	}
     
     return o;
@@ -147,4 +146,6 @@ LinkedList::~LinkedList()
     head->~Node();
     head = 0;
 }
+
+
 #endif
